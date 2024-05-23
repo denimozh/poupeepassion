@@ -6,9 +6,12 @@ import { Input } from "@/components/ui/input"
 import { SignUpValidation } from "@/lib/validation"
 import { z } from "zod"
 import LightLogo from "@/components/shared/LightLogo"
+import Loader from "@/components/shared/Loader"
+import { Link } from "react-router-dom"
+import { createUserAccount } from "@/lib/appwrite/api"
 
 const SignUpForm = () => {
-  const isLoading = true;
+  const isLoading = false;
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -20,8 +23,10 @@ const SignUpForm = () => {
     },
   })
 
-  function onSubmit(values: z.infer<typeof SignUpValidation>) {
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof SignUpValidation>) {
+    const newUser = await createUserAccount(values);
+
+    console.log(newUser);
   }
 
   return (
@@ -29,7 +34,7 @@ const SignUpForm = () => {
       <div className="sm:w-[420px] flex flex-center flex-col items-center">
         <LightLogo/>
         <h2 className="text-4xl pt-5 md:pt-10">Create a new account</h2>
-        <p className="text-slate-400 sm:mt-5">To use Poupee Passion enter your account details</p>
+        <p className="text-slate-400 mt-10 sm:mt-5">To use Poupee Passion enter your account details</p>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col gap-3 w-full mt-4">
           <FormField
             control={form.control}
@@ -85,11 +90,14 @@ const SignUpForm = () => {
           />
           <Button type="submit" className="h-12">
             {isLoading? (
-              <div className="flex-center gap-2">
-                Loading...
+              <div className="flex flex-row gap-2 items-center">
+                <Loader/> <p>Loading...</p>
               </div>
             ): "Sign Up"}
           </Button>
+          <p className="text-lg text-slate-400 text-center mt-2">
+            Already have an account? <Link to={"/sign-in"} className="text-orange-400">Log in</Link>
+          </p>
         </form>
       </div>
     </Form>
