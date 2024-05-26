@@ -7,13 +7,21 @@ import { SignUpValidation } from "@/lib/validation"
 import { z } from "zod"
 import LightLogo from "@/components/shared/LightLogo"
 import Loader from "@/components/shared/Loader"
-import { Link } from "react-router-dom"
-import { createUserAccount } from "@/lib/appwrite/api"
+import { Link, useNavigate } from "react-router-dom"
 import { useToast } from "@/components/ui/use-toast"
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queriesAndMutations"
+import { useUserContext } from "@/context/AuthContext"
 
 const SignUpForm = () => {
   const toast = useToast();
-  const isLoading = false;
+
+  const {checkAuthUser, isLoading: isUserLoading } = useUserContext();
+
+  const navigate = useNavigate();
+
+  const { mutateAsync: createUserAccount, isPending: isCreatingAccount } = useCreateUserAccount();
+
+  const {mutateAsync: signInAccount, isPending: isSigningIn} = useSignInAccount();
 
   const form = useForm<z.infer<typeof SignUpValidation>>({
     resolver: zodResolver(SignUpValidation),
@@ -24,7 +32,7 @@ const SignUpForm = () => {
       password: '',
     },
   })
-
+  
   async function onSubmit(values: z.infer<typeof SignUpValidation>) {
     const newUser = await createUserAccount(values);
 
@@ -32,7 +40,20 @@ const SignUpForm = () => {
       return toast({title: "Sign Up Failed. Please try again.",});
     }
 
-    // const session = await signInAccount()
+    const session = await signInAccount({email: values.email, password: values.password})
+
+    if(!session){
+      return toast({title: "Sign In Failed. Please try again."})
+    }
+
+    const isLoggedIn = await checkAuthUser();
+
+    if(isLoggedIn){
+      form.reset();
+      navigate('/')
+    } else {
+      return toast({ title: 'Sign Up Failed. Please try again.'});
+    }
   }
 
   return (
@@ -95,7 +116,7 @@ const SignUpForm = () => {
             )}
           />
           <Button type="submit" className="h-12">
-            {isLoading? (
+            {isCreatingAccount? (
               <div className="flex flex-row gap-2 items-center">
                 <Loader/> <p>Loading...</p>
               </div>
