@@ -13,7 +13,7 @@ import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/querie
 import { useUserContext } from "@/context/AuthContext"
 
 const SignUpForm = () => {
-  const toast = useToast();
+  const { toast } = useToast();
 
   const {checkAuthUser, isLoading: isUserLoading } = useUserContext();
 
@@ -43,7 +43,8 @@ const SignUpForm = () => {
     const session = await signInAccount({email: values.email, password: values.password})
 
     if(!session){
-      return toast({title: "Sign In Failed. Please try again."})
+      return toast({title: "Sign In Failed. Please try again."});
+      navigate("/sign-in");
     }
 
     const isLoggedIn = await checkAuthUser();
