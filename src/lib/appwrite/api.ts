@@ -7,8 +7,8 @@ export async function createUserAccount(user: INewUser){
       const newAccount = await account.create(
         ID.unique(),
         user.email,
+        user.password,
         user.name,
-        user.password
       ) 
 
       if(!newAccount) throw Error;
@@ -53,9 +53,9 @@ export async function saveUserToDB(user: {
 
 export async function signInAccount(user: {email:string, password:string} ){
   try {
-    const session = await account.createEmailPasswordSession(user.email, user.password)
+    const session = await account.createEmailPasswordSession(user.email, user.password);
 
-    return session
+    return session;
   } catch (error) {
     console.log(error)
   }
