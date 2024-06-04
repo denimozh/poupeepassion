@@ -1,10 +1,15 @@
 import React from 'react'
 
-const LightLogo = () => {
+type Props = {
+  text: string,
+  width: string,
+  height: string,
+}
+const LightLogo = (props: Props) => {
   return (
     <div className='flex flex-row items-center'>
-        <img src='/assets/iconLight.png' className='w-16 h-15'/>
-        <p className='text-4xl font-medium'>PoupeePassion</p>
+        <img src='/assets/iconLight.png' className={`${props.width} ${props.height}`}/>
+        <p className={`${props.text} font-medium`}>PoupeePassion</p>
     </div>
   )
 }
