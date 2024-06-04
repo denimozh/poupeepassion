@@ -60,7 +60,7 @@ const SignUpForm = () => {
   return (
     <Form {...form}>
       <div className="sm:w-[420px] flex flex-center flex-col items-center">
-        <LightLogo/>
+        <LightLogo text="text-4xl" width="w-16" height="h-15"/>
         <h2 className="text-4xl pt-5 md:pt-10">Create a new account</h2>
         <p className="text-slate-400 mt-10 sm:mt-5">To use Poupee Passion enter your account details</p>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 flex flex-col gap-3 w-full mt-4">
