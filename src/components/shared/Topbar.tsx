@@ -7,7 +7,6 @@ import { useSignOutAccount } from '@/lib/react-query/queriesAndMutations';
 import { useUserContext } from '@/context/AuthContext';
 
 const TopBar = () => {
-
   const { mutate: signOut, isSuccess } = useSignOutAccount();
   const navigate = useNavigate();
   const { user } = useUserContext();
@@ -17,14 +16,14 @@ const TopBar = () => {
   }, [isSuccess])
 
   return (
-    <section className='sticky top-0 z-50  md:hidden bg-slate-100 w-full'>
+    <section className='sticky top-0 z-50  md:hidden bg-white w-full'>
       <div className='flex flex-row justify-between items-center py-2 px-4'>
         <Link to="/" className="gap-3 items-center flex flex-row">
           <LightLogo text='text-xl' width="w-12" height="h-15"/>
         </Link>
 
         <div className='flex gap-4'>
-          <Button variant="outline" onClick={() => signOut}>
+          <Button variant="outline" onClick={() => signOut} className='flex gap-4 items-center hover:bg-transparent '>
             <IoIosLogOut className='text-2xl'/>
           </Button>
           <Link to={`/profile/${user.id}`} className='flex justify-center items-center gap-3'>
