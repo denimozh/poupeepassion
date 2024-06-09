@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from '../ui/textarea'
+import FileUploader from '../shared/FileUploader'
  
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -66,7 +67,36 @@ const PostForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <FormField
+                    control={form.control}
+                    name="file"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className=''>Add Photos</FormLabel>
+                            <FormControl>
+                                <FileUploader />
+                            </FormControl>
+                            <FormMessage className='text-red-500'/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="file"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className=''>Add Tags (seperated by commas (" , "))</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Art, Expression, Vintage" {...field} />
+                            </FormControl>
+                            <FormMessage className='text-red-500'/>
+                        </FormItem>
+                    )}
+                />
+                <div className='flex gap-4 items-center justify-end'>
+                    <Button type="button" className='h-12 px-5 flex gap-2'>Cancel</Button>
+                    <Button type="submit" className='border-2 border-slate-400 bg-white text-black hover:text-white h-12 px-5 flex gap-2'>Submit</Button>
+                </div>
             </form>
         </Form>
     )
