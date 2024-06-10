@@ -22,7 +22,7 @@ const formSchema = z.object({
   }),
 })
 
-const PostForm = () => {
+const PostForm = ({ post }) => {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -46,7 +46,7 @@ const PostForm = () => {
                     name="title"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className=''>Title</FormLabel>
+                            <FormLabel className='text-lg'>Title</FormLabel>
                             <FormControl>
                                 <Input placeholder="Title" {...field} />
                             </FormControl>
@@ -59,7 +59,7 @@ const PostForm = () => {
                     name="caption"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className=''>Caption</FormLabel>
+                            <FormLabel className='text-lg'>Caption</FormLabel>
                             <FormControl>
                                 <Textarea className='h-36 bg-slate-100 rounded-xl outline-none' {...field} />
                             </FormControl>
@@ -72,9 +72,9 @@ const PostForm = () => {
                     name="file"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className=''>Add Photos</FormLabel>
+                            <FormLabel className='text-lg'>Add Photos</FormLabel>
                             <FormControl>
-                                <FileUploader />
+                                <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageUrl}/>
                             </FormControl>
                             <FormMessage className='text-red-500'/>
                         </FormItem>
@@ -85,7 +85,7 @@ const PostForm = () => {
                     name="file"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className=''>Add Tags (seperated by commas (" , "))</FormLabel>
+                            <FormLabel className='text-lg'>Add Tags (seperated by commas (" , "))</FormLabel>
                             <FormControl>
                                 <Input placeholder="Art, Expression, Vintage" {...field} />
                             </FormControl>
