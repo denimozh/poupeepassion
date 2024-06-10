@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from '../ui/textarea'
+import FileUploader from '../shared/FileUploader'
  
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -21,7 +22,7 @@ const formSchema = z.object({
   }),
 })
 
-const PostForm = () => {
+const PostForm = ({ post }) => {
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -45,7 +46,7 @@ const PostForm = () => {
                     name="title"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className=''>Title</FormLabel>
+                            <FormLabel className='text-lg'>Title</FormLabel>
                             <FormControl>
                                 <Input placeholder="Title" {...field} />
                             </FormControl>
@@ -58,7 +59,7 @@ const PostForm = () => {
                     name="caption"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel className=''>Caption</FormLabel>
+                            <FormLabel className='text-lg'>Caption</FormLabel>
                             <FormControl>
                                 <Textarea className='h-36 bg-slate-100 rounded-xl outline-none' {...field} />
                             </FormControl>
@@ -66,7 +67,36 @@ const PostForm = () => {
                         </FormItem>
                     )}
                 />
-                <Button type="submit">Submit</Button>
+                <FormField
+                    control={form.control}
+                    name="file"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className='text-lg'>Add Photos</FormLabel>
+                            <FormControl>
+                                <FileUploader fieldChange={field.onChange} mediaUrl={post?.imageUrl}/>
+                            </FormControl>
+                            <FormMessage className='text-red-500'/>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="file"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className='text-lg'>Add Tags (seperated by commas (" , "))</FormLabel>
+                            <FormControl>
+                                <Input placeholder="Art, Expression, Vintage" {...field} />
+                            </FormControl>
+                            <FormMessage className='text-red-500'/>
+                        </FormItem>
+                    )}
+                />
+                <div className='flex gap-4 items-center justify-end'>
+                    <Button type="button" className='h-12 px-5 flex gap-2'>Cancel</Button>
+                    <Button type="submit" className='border-2 border-slate-400 bg-white text-black hover:text-white h-12 px-5 flex gap-2'>Submit</Button>
+                </div>
             </form>
         </Form>
     )
