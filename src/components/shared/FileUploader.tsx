@@ -35,7 +35,7 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
                         <img src='/assets/icons/fileUpload.svg' width={96} height={77} alt='file-upload'/>
                         <h3 className='text-xl text-slate-500 mb-2 mt-6'>Drag Photo Here</h3>
                         <p className='text-lg mb-6 text-slate-400'>SVG, PNG, JPEG</p>
-                        <Button className="h-12 px-5 flex gap-2">Select From Computer</Button>
+                        <Button className="h-12 px-5 flex gap-2">Select From Device</Button>
                     </div>
                 )
             }
