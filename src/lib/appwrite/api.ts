@@ -1,6 +1,7 @@
 import { INewPost, INewUser } from "@/types";
-import { ID, Query } from "appwrite";
+import { ID, ImageGravity, Query } from "appwrite";
 import { account, appwriteConfig, avatars, databases, storage } from "./config";
+import { errorUtil } from "node_modules/zod/lib/helpers/errorUtil";
 
 export async function createUserAccount(user: INewUser){
     try {
@@ -97,14 +98,14 @@ export async function createPost(post: INewPost){
 
     if(!uploadedFile) throw Error;
 
-    const fileUrl = getFilePreview(uploadedFile.$id);
+    const fileUrl = await getFilePreview(uploadedFile.$id);
 
     if(!fileUrl) {
       deleteFile(uploadedFile.$id);
       throw Error;
     }
 
-    const tags = post.tags?.replace(/ /g, '').split(',') || [];
+    const tags = post.tags?.replace(/ /g,'').split(',') || [];
 
     const newPost = await databases.createDocument(
       appwriteConfig.databaseId,
@@ -152,13 +153,13 @@ export async function getFilePreview(fileId: string){
       fileId,
       2000,
       2000,
-      "top",
+      ImageGravity.Top,
       100 
     )
 
     if (!fileUrl) throw Error;
 
-    return fileUrl
+    return fileUrl;
   } catch (error) {
     console.log(error);
   }
@@ -172,4 +173,16 @@ export async function deleteFile(fileId: string){
   } catch (error) {
     console.log(error);
   }
+}
+
+export async function getRecentPosts(){
+  const posts = await databases.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.postCollectionId,
+    [Query.orderDesc('$createdAt'), Query.limit(20)]
+  )
+
+  if(!posts) throw Error;
+
+  return posts;
 }
