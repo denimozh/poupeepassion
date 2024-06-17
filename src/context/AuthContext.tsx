@@ -12,7 +12,7 @@ export const INITIAL_USER = {
     bio: '',
 }
 
-export const INITIAL_STATE = {
+const INITIAL_STATE = {
     user: INITIAL_USER,
     isLoading: false,
     isAuthenticated: false,
