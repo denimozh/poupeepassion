@@ -10,7 +10,7 @@ const CreatePost = () => {
           <MdAddPhotoAlternate className='text-5xl'/>
           <h2 className='text-left w-full text-2xl md:text-4xl font-bold'>Create Post</h2>
         </div>
-        <PostForm/>
+        <PostForm action='Create'/>
       </div>
     </div>
   )
