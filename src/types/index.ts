@@ -28,7 +28,7 @@ export type INavLink = {
     imageId?: string;
     imageUrl?: URL;
     file?: File[];
-    location?: string;
+    title?: string;
     tags?: string;
   };
   
